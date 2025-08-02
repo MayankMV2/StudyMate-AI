@@ -1,6 +1,6 @@
-PyPDF2
-langchain
 streamlit
+PyPDF2
+langchain==0.1.14
+chromadb==0.4.15
 openai
-chromadb
 sentence-transformers
