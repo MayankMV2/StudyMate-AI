@@ -27,3 +27,27 @@ elif not question:
 else:
     st.success("Ready to process!")
     # (Call your RAG + summary logic here)
+else:
+    with st.spinner("Processing your document and question..."):
+        # Save PDF locally
+        file_path = os.path.join("data", pdf_file.name)
+        os.makedirs("data", exist_ok=True)
+        with open(file_path, "wb") as f:
+            f.write(pdf_file.getbuffer())
+
+        # Load + chunk
+        chunks = load_and_split_pdf(file_path)
+
+        # Build chain
+        qa_chain = build_qa_chain(chunks)
+
+        # Generate answer
+        try:
+            answer = qa_chain.run(question)
+            st.success("✅ Answer generated!")
+            st.markdown("### 🧠 Answer:")
+            st.write(answer)
+        except Exception as e:
+            st.error(f"❌ Something went wrong: {e}")
+
+
